@@ -1,0 +1,61 @@
+# Always create Service before the deployment
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotest
+spec:
+  type: LoadBalancer # Default is ClusterIP
+  selector:
+    app: gotest-server
+    # env: prod
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Define the Deployment Name
+  name: gotest-deployment
+  labels:
+    app: gotest-server
+spec:
+  # Define the Number of Pods
+  replicas: 2
+  # Define the Selector
+  selector:
+    matchLabels:
+      app: gotest-server
+  template:
+    metadata:
+      labels:
+        app: gotest-server
+    spec:
+      containers: # Container Details
+        - name: gotest
+          image: <dockerhub-user>/gotest:0.1 # Image
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /go
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          resources:
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+            requests:
+              cpu: "0.5"
+              memory: "512Mi"
+          ports:
+            - containerPort: 8000

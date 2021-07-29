@@ -1,0 +1,9 @@
+# github.com/gorilla/mux v1.7.0
+github.com/gorilla/mux
+# golang.org/x/text v0.0.0-20170915032832-14c0d48ead0c
+golang.org/x/text/internal/tag
+golang.org/x/text/language
+# rsc.io/quote/v3 v3.0.0
+rsc.io/quote/v3
+# rsc.io/sampler v1.3.0
+rsc.io/sampler
